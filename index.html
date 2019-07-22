@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的导航</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <header></header>
+    <main>
+        <div id='main1' class="wrapper"></div>
+    </main>
+    <footer></footer>
+    <script>
+        var keys = [
+            ['q','w','e','r','t','y','u','i','o','p'],
+            ['a','s','d','f','g','h','j','k','l'],
+            ['z','x','c','v','b','n','m']
+        ]
+        var hash = {
+            q:'www.qq.com',
+            w:'weibo.com',
+            e:'ele.me',
+            r:'renren.com',
+            z:'zhihu.com'
+        }
+        hashInLocalStorage = getFromLocalStorage('zzz')
+        if(hashInLocalStorage){
+            hash = hashInLocalStorage
+        }
+        index1 = 0
+        while(index1 < keys.length){
+            var div1 = tag('div')
+            div1.className = 'row'
+            main1.appendChild(div1)
+            var row = keys[index1]
+            var index2 = 0
+            while(index2 < row.length){
+                var span1 = createSpan(row[index2])
+            
+                var button1 = tag('button')
+                button1.textContent = 'E'
+                button1.id = row[index2]
+                button1.onclick = function(dianji){
+                    button2 = dianji['target']
+                    img2 = button2.previousSibling
+                    key = button2['id']
+                    x = prompt('给我一个网址')
+                    hash[key] = x
+                    img2.src = img1.src = 'http://' + x + '/favicon.ico' 
+                    localStorage.setItem('zzz',JSON.stringify(hash))
+                }
+
+                var img1 = tag('img')
+                img1.src = 'http://' + hash[row[index2]] + '/favicon.ico'
+                img1.onerror = function(xxx){
+                    console.log('下载失败')
+                    console.log(xxx)
+                }
+                
+                var kbd1 = tag('kbd')
+                kbd1.appendChild(span1)
+                kbd1.className = 'key'
+                kbd1.appendChild(img1)
+                kbd1.appendChild(button1)
+                
+                div1.appendChild(kbd1)
+                index2++;
+            }
+            index1++;
+        }
+        document.onkeypress = function(jian){
+            key = jian['key']
+            website = hash[key]
+            //location.href = 'http://' + website
+            window.open('http://' + website,'_blank')
+            }
+        function getFromLocalStorage(name){
+            return JSON.parse(localStorage.getItem(name) || 'null')
+        }
+        function tag(tagName){
+            return document.createElement(tagName)
+        }
+        function createSpan(textContent){
+            var span1 = tag('span')
+            span1.textContent = row[index2]
+            span1.className = 'text'
+            return span1
+            }
+        </script>
+</body>
+</html>
